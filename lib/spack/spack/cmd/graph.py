@@ -41,6 +41,10 @@ def setup_parser(subparser):
         '--dot', action='store_true',
         help="Generate graph in dot format and print to stdout.")
 
+    method.add_argument(
+        '--png', action='store_true',
+        help="Generate graph in dot format and convert to png.")
+
     subparser.add_argument(
         '--concretize', action='store_true', help="Concretize specs before graphing.")
 
@@ -56,8 +60,8 @@ def graph(parser, args):
         setup_parser.parser.print_help()
         return 1
 
-    if args.dot:    # Dot graph only if asked for.
-        graph_dot(*specs)
+    if args.dot or args.png:    # Dot graph only if asked for.
+        graph_dot(*specs, png=args.png)
 
     elif specs:     # ascii is default: user doesn't need to provide it explicitly
         graph_ascii(specs[0], debug=spack.debug)

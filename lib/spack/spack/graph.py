@@ -509,7 +509,11 @@ def graph_dot(*specs, **kwargs):
         spack graph --dot qt | dot -Tpdf > spack-graph.pdf
 
     """
-    out = kwargs.pop('out', sys.stdout)
+    png = kwargs.pop('png')
+    if png:
+        out = open('spack.dot', 'w')
+    else:
+        out = kwargs.pop('out', sys.stdout)
     check_kwargs(kwargs, graph_dot)
 
     out.write('digraph G {\n')
@@ -551,3 +555,8 @@ def graph_dot(*specs, **kwargs):
     for pair in deps:
         out.write('  "%s" -> "%s"\n' % pair)
     out.write('}\n')
+    
+    if png:
+        out.close()
+        os.system('dot -Tpng -o spack.png spack.dot')
+        sys.stdout.write('wrote spack.dot and spack.png\n')
