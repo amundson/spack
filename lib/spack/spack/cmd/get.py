@@ -40,20 +40,6 @@ def get(parser, args):
 
     specs = spack.cmd.parse_specs(args.packages, concretize=True)
     for spec in specs:
-        print 'jfa spec:', spec
-        print 'jfa spec.prefix:', spec.prefix
-        for dep in spec.dependencies.values():
-            print 'jfa dep:', dep
-        print 'jfa: starting...\n\n'
         package = spack.db.get(spec)
         with spack.installed_db.write_transaction():
             package.do_get()
-#        package = spack.db.get(spec)
-#        with spack.installed_db.write_transaction():
-#            package.do_install(
-#                keep_prefix=args.keep_prefix,
-#                keep_stage=args.keep_stage,
-#                ignore_deps=args.ignore_deps,
-#                make_jobs=args.jobs,
-#                verbose=args.verbose,
-#                fake=args.fake)

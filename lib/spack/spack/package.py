@@ -829,10 +829,8 @@ class Package(object):
         if os.path.exists(self.prefix):
             tty.msg("%s is already installed in %s." % (self.name, self.prefix))
         else:
-            self.do_get_dependencies()        
-            print 'jfa: trying to get', self.prefix
+            self.do_get_dependencies()
             install_dir = os.path.dirname(self.prefix)
-            print 'jfa: install_dir =', install_dir
             if not os.path.exists(install_dir):
                 print 'jfa: creating directory', install_dir
                 mkdirp(install_dir)
@@ -841,16 +839,16 @@ class Package(object):
             # jfa: I'm sure there is a better way to get these paths..
             arch_comp = os.path.join(os.path.basename(os.path.dirname(install_dir)),
                                      os.path.basename(install_dir))
-            print 'jfa: arch_comp =', arch_comp
             install_root = os.path.dirname(os.path.dirname(install_dir))
             tar_file_name = os.path.basename(self.prefix)+'.tar.gz'
             url = url_root + arch_comp + '/' + tar_file_name
-            print 'jfa: url = "%s"' % url
             urllib.urlretrieve(url, tar_file_name)
             tar_file = tarfile.open(tar_file_name)
             tar_file.extractall()
             
             spack.installed_db.add(self.spec, self.prefix)
+            tty.msg("got %s." % self.name)
+
         
     def do_install(self,
                    keep_prefix=False,  keep_stage=False, ignore_deps=False,
