@@ -42,6 +42,8 @@ import platform as py_platform
 import multiprocessing
 from urlparse import urlparse, urljoin
 import textwrap
+import urllib
+import tarfile
 from StringIO import StringIO
 
 import llnl.util.tty as tty
@@ -816,8 +818,40 @@ class Package(object):
     def _build_logger(self, log_path):
         """Create a context manager to log build output."""
 
+    def do_get_dependencies(self):
+        for dep in self.spec.dependencies.values():
+            dep.package.do_get()
+        
+    def do_get(self):
+        if not self.spec.concrete:
+            raise ValueError("Can only install concrete packages.")
 
-
+        if os.path.exists(self.prefix):
+            tty.msg("%s is already installed in %s." % (self.name, self.prefix))
+        else:
+            self.do_get_dependencies()        
+            print 'jfa: trying to get', self.prefix
+            install_dir = os.path.dirname(self.prefix)
+            print 'jfa: install_dir =', install_dir
+            if not os.path.exists(install_dir):
+                print 'jfa: creating directory', install_dir
+                mkdirp(install_dir)
+            os.chdir(install_dir)
+            url_root = 'http://compacc.fnal.gov/~amundson/spack/'
+            # jfa: I'm sure there is a better way to get these paths..
+            arch_comp = os.path.join(os.path.basename(os.path.dirname(install_dir)),
+                                     os.path.basename(install_dir))
+            print 'jfa: arch_comp =', arch_comp
+            install_root = os.path.dirname(os.path.dirname(install_dir))
+            tar_file_name = os.path.basename(self.prefix)+'.tar.gz'
+            url = url_root + arch_comp + '/' + tar_file_name
+            print 'jfa: url = "%s"' % url
+            urllib.urlretrieve(url, tar_file_name)
+            tar_file = tarfile.open(tar_file_name)
+            tar_file.extractall()
+            
+            spack.installed_db.add(self.spec, self.prefix)
+        
     def do_install(self,
                    keep_prefix=False,  keep_stage=False, ignore_deps=False,
                    skip_patch=False, verbose=False, make_jobs=None, fake=False):
