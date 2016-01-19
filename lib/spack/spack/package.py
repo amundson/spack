@@ -850,6 +850,33 @@ class Package(object):
             retval = False
         return retval
                 
+    def get_existing_rpath(self, path_name):
+        if platform.system() == 'Darwin':
+            command = 'otool -l ' + path_name
+            status, output = getstatusoutput(command)
+            if status != 0:
+                sys.stderr.write('get_existing_rpath error: "' + \
+                    command + '" failed\n')
+                return False
+            last_cmd = None
+            for line in output.split('\n'):
+                match = re.search('( *[a-zA-Z]+ )(.*)', line)
+                if match:
+                    lhs = match.group(1).lstrip().rstrip()
+                    rhs = match.group(2)
+                    match2 = re.search('(.*) \(.*\)', rhs)
+                    if match2:
+                        rhs = match2.group(1)
+                    if lhs == 'cmd':
+                        last_cmd = rhs
+                    if lhs == 'path' and last_cmd == 'LC_RPATH':
+                        path = rhs
+            return path.split(':')
+
+    def substitute_rpath(self, orig_rpath, topdir, new_root_dir):
+        print 'jfa topdir:', topdir
+        print 'jfa new_root_dir:', new_root_dir
+        print 'jfa orig_rpath:', orig_rpath
         
     def relocate_files_in_dir(self, topdir, new_root_dir):
         for dir_name, subdirs, files in os.walk(topdir):
@@ -859,6 +886,8 @@ class Package(object):
                 if relocate:
                     print 
                     print 'jfa: relocating', path_name
+                    orig_rpath = self.get_existing_rpath(path_name)
+                    self.substitute_rpath(orig_rpath, topdir, new_root_dir)
                 else:
                     print 'jfa: skipping', path_name
                 
