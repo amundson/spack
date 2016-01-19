@@ -34,6 +34,7 @@ rundown on spack and how it differs from homebrew, look at the
 README.
 """
 import os
+import platform
 import re
 import time
 import itertools
@@ -45,6 +46,7 @@ import textwrap
 import urllib
 import tarfile
 from StringIO import StringIO
+from commands import getstatusoutput
 
 import llnl.util.tty as tty
 from llnl.util.tty.log import log_output
@@ -821,6 +823,51 @@ class Package(object):
     def do_get_dependencies(self):
         for dep in self.spec.dependencies.values():
             dep.package.do_get()
+
+    def check_file_output(self, path_name, search_string):
+        command = 'file -b ' + path_name
+        status, output = getstatusoutput(command)
+        if status != 0:
+            sys.stderr.write('check_file_output warning: "' + \
+                command + '" failed\n')
+            return False
+        retval = False
+        search_len = len(search_string)
+        if len(output) >= search_len:
+            if output[0:search_len] == search_string:
+                retval = True
+        return retval
+        
+    def needs_relocation(self, path_name):
+        retval = False
+        if platform.system() == 'Darwin':
+            retval = self.check_file_output(path_name, 'Mach-O')
+        elif platform.system() == 'Linux':
+            retval = self.check_file_output(path_name, 'ELF')
+        else:
+            sys.stderr.write('needs_relocation: unknown platform "' + \
+                platform.system() + '"\n')
+            retval = False
+        return retval
+                
+        
+    def relocate_files_in_dir(self, topdir, new_root_dir):
+        for dir_name, subdirs, files in os.walk(topdir):
+            for file_name in files:
+                path_name = os.path.join(dir_name, file_name)
+                relocate = self.needs_relocation(path_name)
+                if relocate:
+                    print 
+                    print 'jfa: relocating', path_name
+                else:
+                    print 'jfa: skipping', path_name
+                
+    def relocate(self, dir_name):
+        new_root_dir = os.path.dirname(dir_name)
+        self.relocate_files_in_dir(os.path.join(dir_name, "lib"),
+                                   new_root_dir)
+        self.relocate_files_in_dir(os.path.join(dir_name, "bin"),
+                                   new_root_dir)
         
     def do_get(self):
         if not self.spec.concrete:
@@ -845,6 +892,7 @@ class Package(object):
             urllib.urlretrieve(url, tar_file_name)
             tar_file = tarfile.open(tar_file_name)
             tar_file.extractall()
+            self.relocate(self.prefix)
             
             spack.installed_db.add(self.spec, self.prefix)
             tty.msg("got %s." % self.name)
