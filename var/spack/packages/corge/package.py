@@ -7,6 +7,7 @@ class Corge(Package):
 
     version('1.0', 'c83ec110f677b67e0496260ccc7ceb81')
 
+    depends_on("cmake@3.0:")
     depends_on("quux")
 
     def install(self, spec, prefix):
