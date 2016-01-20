@@ -915,7 +915,7 @@ class Package(object):
                         command + '" failed\n')
         elif platform.system() == 'Linux':
             new_joined = ':'.join(new_rpath)
-            command = "patchelf --force-rpath --set-rpath '%s'" % \
+            command = "patchelf --force-rpath --set-rpath '%s' '%s'" % \
                 (new_joined, path_name)
             status, output = getstatusoutput(command)
             if status != 0:
