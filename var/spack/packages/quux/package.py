@@ -7,6 +7,7 @@ class Quux(Package):
 
     version('1.0', 'e64c0dfbfdf43c17cd6aeeef79058734')
 
+    depends_on("cmake@3.0:")
     depends_on("garply")
 
     def install(self, spec, prefix):
