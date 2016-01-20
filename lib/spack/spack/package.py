@@ -874,10 +874,46 @@ class Package(object):
             return path.split(':')
 
     def substitute_rpath(self, orig_rpath, topdir, new_root_dir):
-        print 'jfa topdir:', topdir
-        print 'jfa new_root_dir:', new_root_dir
-        print 'jfa orig_rpath:', orig_rpath
-        
+#        print 'jfa topdir:', topdir
+#        print 'jfa new_root_dir:', new_root_dir
+#        print 'jfa orig_rpath:', orig_rpath
+        head0, comp = os.path.split(new_root_dir)
+        head, arch = os.path.split(head0)
+        arch_comp = os.path.join(arch, comp)
+#        print 'jfa: arch_comp:', arch_comp
+        new_rpath = []
+        for path in orig_rpath:
+#            print 'jfa path:', path
+            new_path = re.sub('.*/' + arch_comp, new_root_dir, path)
+#            print 'jfa new_path:', new_path
+            new_rpath.append(new_path)
+        return new_rpath
+    
+    def modify_rpath(self, path_name, orig_rpath, new_rpath):
+        if platform.system() == 'Darwin':
+            print 'jfa orig:', orig_rpath
+            orig_joined = ':'.join(orig_rpath)
+            print 'jfa new:', new_rpath
+            new_joined = ':'.join(new_rpath)
+            command = "install_name_tool -rpath '%s' '%s' '%s'" % \
+                (orig_joined, new_joined, path_name)
+            print 'jfa modify_rpath command:', command
+            status, output = getstatusoutput(command)
+            if status != 0:
+                sys.stderr.write('modify_rpath warning: "' + \
+                    command + '" failed\n')
+            for orig, new in zip(orig_rpath, new_rpath):
+                print 'jfa orig:', orig
+                print 'jfa new:', new
+                command = "install_name_tool -rpath '%s' '%s' '%s'" % \
+                    (orig, new, path_name)
+                print 'jfa modify_rpath command:', command
+                status, output = getstatusoutput(command)
+                if status != 0:
+                    sys.stderr.write('modify_rpath warning: "' + \
+                        command + '" failed\n')
+
+
     def relocate_files_in_dir(self, topdir, new_root_dir):
         for dir_name, subdirs, files in os.walk(topdir):
             for file_name in files:
@@ -887,7 +923,8 @@ class Package(object):
                     print 
                     print 'jfa: relocating', path_name
                     orig_rpath = self.get_existing_rpath(path_name)
-                    self.substitute_rpath(orig_rpath, topdir, new_root_dir)
+                    new_rpath = self.substitute_rpath(orig_rpath, topdir, new_root_dir)
+                    self.modify_rpath(path_name, orig_rpath, new_rpath)
                 else:
                     print 'jfa: skipping', path_name
                 
