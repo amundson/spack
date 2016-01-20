@@ -872,6 +872,19 @@ class Package(object):
                     if lhs == 'path' and last_cmd == 'LC_RPATH':
                         path = rhs
             return path.split(':')
+        elif platform.system() == 'Linux':
+            command = 'patchelf --print-rpath ' + path_name
+            status, output = getstatusoutput(command)
+            if status != 0:
+                sys.stderr.write('get_existing_rpath error: "' + \
+                    command + '" failed\n')
+                return False
+            return output.split(':')
+        else:
+            sys.stderr.write('get_existing_rpath: unknown platform "' + \
+                platform.system() + '"\n')
+            retval = False
+        return retval
 
     def substitute_rpath(self, orig_rpath, topdir, new_root_dir):
         head0, comp = os.path.split(new_root_dir)
@@ -900,8 +913,18 @@ class Package(object):
                 if status != 0:
                     sys.stderr.write('modify_rpath warning: "' + \
                         command + '" failed\n')
-
-
+        elif platform.system() == 'Linux':
+            new_joined = ':'.join(new_rpath)
+            command = "patchelf --force-rpath --set-rpath '%s'" % \
+                (new_joined, path_name)
+            status, output = getstatusoutput(command)
+            if status != 0:
+                sys.stderr.write('modify_rpath warning: "' + \
+                    command + '" failed\n')
+        else:
+            sys.stderr.write('modify_rpath: unknown platform "' + \
+                platform.system() + '"\n')
+ 
     def relocate_files_in_dir(self, topdir, new_root_dir):
         for dir_name, subdirs, files in os.walk(topdir):
             for file_name in files:
