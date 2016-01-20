@@ -7,6 +7,8 @@ class Garply(Package):
 
     version('1.0', '13a24801512e5b577afde076d2e908d3')
 
+    depends_on("cmake@3.0:")
+
     def install(self, spec, prefix):
         cmake(".", *std_cmake_args)
         make()
