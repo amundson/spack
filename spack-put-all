@@ -1,0 +1,14 @@
+#!/bin/bash
+
+dirname1=$(basename $(/bin/pwd))
+dirname2=$(basename $(dirname $(/bin/pwd)))
+destdir="/home/amundson/public_html/spack/$dirname2/$dirname1"
+ssh compacc.fnal.gov "mkdir -p $destdir"
+for i in *
+do
+    if [ -d $i ] ; then
+        tar zcf $i.tar.gz $i
+        scp $i.tar.gz compacc.fnal.gov:$destdir
+    fi
+done
+
