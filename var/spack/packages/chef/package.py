@@ -14,7 +14,11 @@ class Chef(Package):
     depends_on("py-numpy")
 
     def install(self, spec, prefix):
-        cmake('.', *std_cmake_args)
+        options = []
+        options.extend(std_cmake_args)
+        options.extend(['-DBUILD_PARSER_MODULES=OFF'])
+
+        cmake('.', *options)
 
         make()
         make("install")
