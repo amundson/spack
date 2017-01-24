@@ -62,6 +62,9 @@ class SetEnv(NameValueModifier):
     def execute(self):
         os.environ[self.name] = str(self.value)
 
+    def to_sh(self, out):
+        out.write(self.name + "='" + self.value + "'\n")
+
 
 class AppendFlagsEnv(NameValueModifier):
 
@@ -78,12 +81,19 @@ class UnsetEnv(NameModifier):
         # Avoid throwing if the variable was not set
         os.environ.pop(self.name, None)
 
+    def to_sh(self, out):
+        out.write('unset ' + self.name + "\n")
+
 
 class SetPath(NameValueModifier):
 
     def execute(self):
         string_path = concatenate_paths(self.value, separator=self.separator)
         os.environ[self.name] = string_path
+
+    def to_sh(self, out):
+        string_path = concatenate_paths(self.value, separator=self.separator)
+        out.write(self.name + "='" + string_path + "'\n")
 
 
 class AppendPath(NameValueModifier):
@@ -95,6 +105,10 @@ class AppendPath(NameValueModifier):
         directories.append(os.path.normpath(self.value))
         os.environ[self.name] = self.separator.join(directories)
 
+    def to_sh(self, out):
+        value = self.separator.join(["$PATH", os.path.normpath(self.value)])
+        out.write(self.name + '="' + value + '"\n')
+
 
 class PrependPath(NameValueModifier):
 
@@ -104,6 +118,10 @@ class PrependPath(NameValueModifier):
             self.separator) if environment_value else []
         directories = [os.path.normpath(self.value)] + directories
         os.environ[self.name] = self.separator.join(directories)
+
+    def to_sh(self, out):
+        value = self.separator.join([os.path.normpath(self.value), "$PATH"])
+        out.write(self.name + '="' + value + '"\n')
 
 
 class RemovePath(NameValueModifier):
@@ -272,6 +290,16 @@ class EnvironmentModifications(object):
         for name, actions in sorted(modifications.items()):
             for x in actions:
                 x.execute()
+
+    def write_sh_modifications(self, out):
+        """
+        Write the modifications in Bourne shell form to out
+        """
+        modifications = self.group_by_name()
+        # Apply modifications one variable at a time
+        for name, actions in sorted(modifications.items()):
+            for x in actions:
+                x.to_sh(out)
 
     @staticmethod
     def from_sourcing_file(filename, *args, **kwargs):

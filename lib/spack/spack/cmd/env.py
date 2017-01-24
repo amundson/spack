@@ -66,7 +66,8 @@ def env(parser, args):
         tty.die("spack env only takes one spec.")
     spec = specs[0]
 
-    build_env.setup_package(spec.package, args.dirty)
+    spack_env = build_env.setup_package(spec.package, args.dirty)
+    spack_env = build_env.setup_package(spec.package)
 
     if not cmd:
         # If no command act like the "env" command and print out env vars.
@@ -76,3 +77,6 @@ def env(parser, args):
     else:
         # Otherwise execute the command with the new environment
         os.execvp(cmd[0], cmd)
+
+    spack_env.write_sh_modifications(sys.stdout)
+

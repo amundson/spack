@@ -501,6 +501,7 @@ def setup_package(pkg, dirty):
     # Make sure nothing's strange about the Spack environment.
     validate(spack_env, tty.warn)
     spack_env.apply_modifications()
+    return spack_env
 
     # All module loads that otherwise would belong in previous functions
     # have to occur after the spack_env object has its modifications applied.
