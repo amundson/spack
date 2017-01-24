@@ -557,6 +557,7 @@ def setup_package(pkg, dirty=False):
     # Make sure nothing's strange about the Spack environment.
     validate(spack_env, tty.warn)
     spack_env.apply_modifications()
+    return spack_env
 
 
 def fork(pkg, function, dirty=False):

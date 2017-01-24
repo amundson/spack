@@ -25,6 +25,7 @@
 from __future__ import print_function
 
 import os
+import sys
 import argparse
 
 import llnl.util.tty as tty
@@ -64,7 +65,7 @@ def env(parser, args):
         tty.die("spack env only takes one spec.")
     spec = specs[0]
 
-    build_env.setup_package(spec.package)
+    spack_env = build_env.setup_package(spec.package)
 
     if not cmd:
         # If no command act like the "env" command and print out env vars.
@@ -74,3 +75,9 @@ def env(parser, args):
     else:
         # Otherwise execute the command with the new environment
         os.execvp(cmd[0], cmd)
+
+    print "jfa start"
+    spack_env.write_sh_modifications(sys.stdout)
+    # for mod in spack_env:
+    #     mod.to_sh(sys.stdout)
+    print "jfa end"
