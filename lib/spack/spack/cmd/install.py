@@ -59,6 +59,11 @@ alternatively one can decide to install only the package or only
 the dependencies"""
     )
     subparser.add_argument(
+        '--exclude',
+        dest='exclude',
+        help="list dependencies to exclude from installation"
+    )
+    subparser.add_argument(
         '-j', '--jobs', action='store', type=int,
         help="explicitly set number of make jobs. default is #cpus")
     subparser.add_argument(
@@ -388,8 +393,9 @@ def install(parser, args, **kwargs):
                 # for root (explicit=False in the DB)
                 kwargs['explicit'] = False
                 for s in spec.dependencies():
-                    p = spack.repo.get(s)
-                    p.do_install(**kwargs)
+                    if not s.name in args.exclude.split(','):
+                        p = spack.repo.get(s)
+                        p.do_install(**kwargs)
 
             else:
                 package = spack.repo.get(spec)
