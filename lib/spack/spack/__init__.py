@@ -96,7 +96,7 @@ from spack.util.path import canonicalize_path
 # Initialize various data structures & objects at the core of Spack.
 #-----------------------------------------------------------------------------
 # Version information
-spack_version = Version("0.10.0")
+spack_version = Version("spackdev-develop1")
 
 
 # Set up the default packages database.
