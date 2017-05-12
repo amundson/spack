@@ -76,8 +76,8 @@ def env(parser, args):
         # Otherwise execute the command with the new environment
         os.execvp(cmd[0], cmd)
 
-    print "jfa start"
+    print("jfa start")
     spack_env.write_sh_modifications(sys.stdout)
     # for mod in spack_env:
     #     mod.to_sh(sys.stdout)
-    print "jfa end"
+    print("jfa end")
