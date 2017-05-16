@@ -72,7 +72,10 @@ class PyNumpy(PythonPackage):
     # depends_on('py-nose@1.0.0:', type='test')
 
     def setup_dependent_package(self, module, dependent_spec):
-        python_version = self.spec['python'].version.up_to(2)
+        if 'python' in self.spec:
+            python_version = self.spec['python'].version.up_to(2)
+        else:
+            python_version = 2.7
         arch = '{0}-{1}'.format(platform.system().lower(), platform.machine())
 
         self.spec.include = join_path(
