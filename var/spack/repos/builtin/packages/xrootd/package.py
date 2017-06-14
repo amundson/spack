@@ -24,21 +24,18 @@
 ##############################################################################
 
 from spack import *
-
+import sys
 
 class Xrootd(Package):
     """The XROOTD project aims at giving high performance, scalable fault
        tolerant access to data repositories of many kinds."""
     homepage = "http://xrootd.org"
-    url      = "http://xrootd.org/download/v4.6.0/xrootd-4.6.0.tar.gz"
+    url      = "http://xrootd.org/download/v4.3.0/xrootd-4.3.0.tar.gz"
 
-    version('4.6.0', '5d60aade2d995b68fe0c46896bc4a5d1')
-    version('4.5.0', 'd485df3d4a991e1c35efa4bf9ef663d7')
-    version('4.4.1', '72b0842f802ccc94dede4ac5ab2a589e')
-    version('4.4.0', '58f55e56801d3661d753ff5fd33dbcc9')
     version('4.3.0', '39c2fab9f632f35e12ff607ccaf9e16c')
 
     depends_on('cmake', type='build')
+    depends_on('python', type='build')
 
     def install(self, spec, prefix):
         options = []
@@ -49,7 +46,8 @@ class Xrootd(Package):
 
         if '+debug' in spec:
             options.append('-DCMAKE_BUILD_TYPE:STRING=Debug')
-
+        if sys.platform == 'darwin':
+            options.append('-DCMAKE_CXX_FLAGS=-fno-strict-aliasing -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-unused-but-set-variable -Wno-unused-variable')
         with working_dir(build_directory, create=True):
             cmake(source_directory, *options)
             make()

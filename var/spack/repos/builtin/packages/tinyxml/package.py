@@ -23,22 +23,31 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
-from shutil import copyfile
-import os.path
+import sys
 
+class Tinyxml(Package):
+    """FIXME: Put a proper description of your package here."""
+    homepage = "https://github.com/cms-externals/tinyxml"
+    url      = "http://cmsrep.cern.ch/cmssw/cms/SOURCES/slc6_amd64_gcc600/external/tinyxml/2.5.3-giojec/tinyxml.2.5.3-3b1ed8542a820e77de84bc08734bde904c3b12be.tgz"
 
-class Tinyxml(CMakePackage):
-    """Simple, small, efficient, C++ XML parser"""
+    version('2.5.3', '3126b4a2dbfbd087e28faca4ad62cd31', 
+       url='http://cmsrep.cern.ch/cmssw/cms/SOURCES/slc6_amd64_gcc600/external/tinyxml/2.5.3-giojec/tinyxml.2.5.3-3b1ed8542a820e77de84bc08734bde904c3b12be.tgz')
+    if sys.platform == 'darwin':
+      patch('tinyxml.patch')
 
-    homepage = "http://grinninglizard.com/tinyxml/"
-    url = "https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz"
+    depends_on('boost+python')
+    depends_on('gmake',type='build')
 
-    version('2.6.2', 'cba3f50dd657cb1434674a03b21394df9913d764')
-
-    def url_for_version(self, version):
-        url = "https://sourceforge.net/projects/tinyxml/files/tinyxml/{0}/tinyxml_{1}.tar.gz"
-        return url.format(version.dotted, version.underscored)
-
-    def patch(self):
-        copyfile(join_path(os.path.dirname(__file__),
-                           "CMakeLists.txt"), "CMakeLists.txt")
+    def install(self, spec, prefix):
+        gmake=which('gmake')
+        gmake('BOOST_ROOT=%s' % spec['boost'].prefix)
+        cp=which('cp')
+        md=which('mkdir')
+        md('%s' % self.prefix.lib)
+        md('%s' % self.prefix.include)
+        if sys.platform == 'darwin':
+          cp('-v','libtinyxml.dylib',prefix.lib)
+          fix_darwin_install_name(prefix.lib) 
+        else: 
+          cp('-v','libtinyxml.so',prefix.lib)
+        cp('-v','tinystr.h','tinyxml.h',prefix.include)
