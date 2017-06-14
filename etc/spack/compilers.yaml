@@ -10,6 +10,20 @@ compilers:
       cxx: /usr/bin/clang++
       f77: gfortran
       fc: gfortran
+    spec: clang@8.1.0-apple
+    target: x86_64
+
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: sierra
+    paths:
+      cc: /usr/bin/clang
+      cxx: /usr/bin/clang++
+      f77: gfortran
+      fc: gfortran
     spec: clang@8.0.0-apple
     target: x86_64
 
