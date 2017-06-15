@@ -98,11 +98,19 @@ class Root(Package):
                        
         if sys.platform == 'darwin':
             darwin_options = [
-                '-Dcocoa=on',
-                '-Dbonjour=on',
+                '-Dcocoa=off',
+                '-Dbonjour=off',
                 '-Dcastor=OFF',
                 '-Drfio=OFF',
                 '-Ddcache=OFF']
+            if 'clang' in self.spec:
+                darwin_options = [
+                    '-Dcocoa=ON',
+                    '-Dbonjour=ON',
+                    '-Dx11=OFF',
+                    '-Dcastor=OFF',
+                    '-Drfio=OFF',
+                    '-Ddcache=OFF']
             options.extend(darwin_options)
         with working_dir(build_directory, create=True):
             cmake(*options)
