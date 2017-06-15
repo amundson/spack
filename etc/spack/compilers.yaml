@@ -1,17 +1,4 @@
 compilers:
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules: []
-    operating_system: sierra
-    paths:
-      cc: /usr/bin/clang
-      cxx: /usr/bin/clang++
-      f77: gfortran
-      fc: gfortran
-    spec: clang@8.1.0-apple
-    target: x86_64
 
 - compiler:
     environment: {}
@@ -32,13 +19,41 @@ compilers:
     extra_rpaths: []
     flags: {}
     modules: []
+    operating_system: sierra
+    paths:
+      cc: /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/gcc-6.3.0-s7dpdcl4um4zfeq5fmwwo52epjv3phzt/bin/gcc
+      cxx: /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/gcc-6.3.0-s7dpdcl4um4zfeq5fmwwo52epjv3phzt/bin/g++
+      f77: /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/gcc-6.3.0-s7dpdcl4um4zfeq5fmwwo52epjv3phzt/bin/gfortran
+      fc: /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/gcc-6.3.0-s7dpdcl4um4zfeq5fmwwo52epjv3phzt/bin/gfortran
+    spec: gcc@6.3.0
+    target: x86_64
+
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
     operating_system: elcapitan
     paths:
       cc: /usr/bin/clang
       cxx: /usr/bin/clang++
-      f77: gfortran
-      fc: gfortran
+      f77: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gfortran
+      fc: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gfortran
     spec: clang@7.3.0-apple
+    target: x86_64
+
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: elcapitan
+    paths:
+      cc: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gcc
+      cxx: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/g++
+      f77: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gfortran
+      fc: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gfortran
+    spec: gcc@6.3.0
     target: x86_64
 
 - compiler:
@@ -50,7 +65,22 @@ compilers:
     paths:
       cc: /usr/bin/clang
       cxx: /usr/bin/clang++
-      f77: gfortran
-      fc: gfortran
-    spec: clang@7.0.3-apple
+      f77: /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/gcc-6.3.0-xvltir5xsrjm5lv3bfwcvex3hvuix3sf/bin/gfortran
+      fc: /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/gcc-6.3.0-xvltir5xsrjm5lv3bfwcvex3hvuix3sf/bin/gfortran
+    spec: clang@7.0.2-apple
     target: x86_64
+
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: yosemite
+    paths:
+      cc: /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/gcc-6.3.0-xvltir5xsrjm5lv3bfwcvex3hvuix3sf/bin/gcc
+      cxx: /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/gcc-6.3.0-xvltir5xsrjm5lv3bfwcvex3hvuix3sf/bin/g++
+      f77: /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/gcc-6.3.0-xvltir5xsrjm5lv3bfwcvex3hvuix3sf/bin/gfortran
+      fc: /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/gcc-6.3.0-xvltir5xsrjm5lv3bfwcvex3hvuix3sf/bin/gfortran
+    spec: gcc@6.3.0
+    target: x86_64
+
