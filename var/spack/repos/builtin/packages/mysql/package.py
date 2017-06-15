@@ -25,6 +25,7 @@
 
 from spack import *
 import os
+import sys
 
 class Mysql(Package):
     """The MySQL software delivers a very fast, multi-threaded, multi-user,
@@ -43,6 +44,7 @@ class Mysql(Package):
     patch('mysql-5.7.11.patch', when='@5.7.11')
 
     depends_on('cmake', type='build')
+    if sys.platform == 'darwin': depends_on('cmake%clang', type='build')
     depends_on('libaio')
 
     def install(self, spec, prefix):

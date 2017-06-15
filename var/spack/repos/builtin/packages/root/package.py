@@ -48,7 +48,10 @@ class Root(Package):
     variant('debug', default=False, description='debug build')
 
     depends_on("cmake", type='build')
-#    depends_on("libtool", type='build')
+    depends_on("libtool", type='build')
+    if sys.platform == 'darwin':
+        depends_on("cmake%clang", type='build')
+        depends_on("libtool%clang", type='build')
     depends_on("pcre")
     depends_on("fftw~mpi")
     depends_on("graphviz", when="+graphviz")

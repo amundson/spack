@@ -24,7 +24,7 @@
 ##############################################################################
 
 from spack import *
-
+import sys
 
 class Clhep(Package):
     """CLHEP is a C++ Class Library for High Energy Physics. """
@@ -46,6 +46,9 @@ class Clhep(Package):
 
     depends_on('cmake@2.8.12.2:', when='@2.2.0.4:2.3.0.0', type='build')
     depends_on('cmake@3.2:', when='@2.3.0.1:', type='build')
+    if sys.platform == 'darwin':
+        depends_on('cmake@2.8.12.2:%clang', when='@2.2.0.4:2.3.0.0', type='build')
+        depends_on('cmake@3.2:%clang', when='@2.3.0.1:', type='build')
 
     def patch(self):
         filter_file('SET CMP0042 OLD',
