@@ -27,7 +27,7 @@ from glob import glob
 from os.path import exists, join
 from os import makedirs
 from shutil import copy
-
+import sys
 
 class Ncurses(AutotoolsPackage):
     """The ncurses (new curses) library is a free software emulation of
@@ -46,6 +46,8 @@ class Ncurses(AutotoolsPackage):
             description='Enables symlinks. Needed on AFS filesystem.')
 
     depends_on('pkg-config', type='build')
+    if sys.platform == 'darwin': 
+        depends_on('pkg-config%clang', type='build')
 
     patch('patch_gcc_5.txt', when='@6.0%gcc@5.0:')
     patch('sed_pgi.patch',   when='@:6.0')
