@@ -52,7 +52,7 @@ compilers:
       cc: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gcc
       cxx: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/g++
       f77: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gfortran
-      fc: /Users/Shared/spack/opt/spack/darwin-elcpitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gfortran
+      fc: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/gcc-6.3.0-alr32mcegzppxtd6t3aymsbgm3p5upxi/bin/gfortran
     spec: gcc@6.3.0
     target: x86_64
 
