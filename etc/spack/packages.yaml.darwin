@@ -1,0 +1,49 @@
+packages:
+
+  autoconf:
+    paths:
+      autoconf@2.69%clang-8.1.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.1.0-apple/autoconf-2.69-vunoom3bbkkbdobg2rhmgayblticjta4
+      autoconf@2.69%clang-8.0.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/autoconf-2.69-oduaqabdmdnekjj372fsci2acr5ayavg
+      autoconf@2.69%clang-7.3.0-apple:  /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/autoconf-2.69-v2p3zjmwej7ejboaztx6fdhz6b5xhqmq
+      autoconf@2.69%clang-7.0.3-apple:  /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/autoconf-2.69-p2giqi5zknvqlzjlpppbhpg2l6qhx7w3
+    buildable: False
+
+  automake:
+    paths:
+      automake@1.15%clang-8.1.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.1.0-apple/automake-1.15-rudzbk4bv3iqub4jj4stjzhiqitsoac5
+      automake@1.15%clang-8.0.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/automake-1.15-77ifwq3b2ikz2nvjdsz5frj225gnky6p
+      automake@1.15%clang-7.3.0-apple:  /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/automake-1.15-gcb7gf5fsxfr5o4acrimsjsnlqsi3zya
+      automake@1.15%clang-7.0.3-apple:  /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/automake-1.15-f2brpoh5y6576tya22kps2kw4y7mkmsy
+    buildable: False
+
+  cmake:
+    paths:
+      cmake@3.8.1%clang-8.1.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.1.0-apple/cmake-3.8.1-dzecxwp2jwfdxasxsrl3gmdksz2r4535
+      cmake@3.8.1%clang-8.0.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/cmake-3.8.1-2c2liww7yyyvpyo2y2syceywxxiqn34x
+      cmake@3.8.1%clang-7.3.0-apple:  /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/cmake-3.8.1-yvcknt7j74xb7mognhhdn7rzlbp3nzez
+      cmake@3.8.1%clang-7.0.3-apple: /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/cmake-3.8.1-bns75mutk2ljpflyzovljanjmiliba5q 
+    buildable: False
+
+  libtool:
+    paths:
+      libtool@2.4.6%clang-8.1.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.1.0-apple/libtool-2.4.6-q23qd54bfr5xuap4czntyfaysgxduc53
+      libtool@2.4.6%clang-8.0.0-apple:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/libtool-2.4.6-hkosw63mw5wxfm4bxp6vfhcj44ou2zpm  
+      libtool@2.4.6%clang-7.3.0-apple:  /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/libtool-2.4.6-ddbicgawmcib7cwjee2vfmq5hwpc2e7p
+      libtool@2.4.6%clang-8.0.3-apple:  /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/libtool-2.4.6-nez2q5b5iylb6jpuvbusxvagx2w6mmv2
+    buildable: False
+
+  m4:
+    paths:
+      m4@1.4.1%clang-8.1.0-apple8:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.1.0-apple/m4-1.4.18-4f4cjgw5fcggj65qk3tzuhkccgv4prn2
+      m4@1.4.1%clang-8.0.0-apple8:  /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/m4-1.4.18-7y3sz7r3of3hqcx4h2ppnz3iwhakflir
+      m4@1.4.1%clang-7.3.0-apple8:  /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/m4-1.4.18-3snn7z344dyirk4f3n5hxsrwa7eat7di
+      m4@1.4.1%clang-7.0.3-apple8:  /Users/Shared/spack/opt/spack/darwin-yosemite-x86_64/clang-7.0.2-apple/m4-1.4.18-ryvj6hvuwcac5fvlqp5mb7t2qgvg4pfp
+    buildable: False
+
+  pkg-config:
+    paths:
+      pkg-config@0.29.2%clang-8.1.0-apple: /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.1.0-apple/pkg-config-0.29.2-72rz43flet5qcqtnx6zimnqy4ilk3tys
+      pkg-config@0.29.2%clang-8.0.0-apple: /Users/Shared/spack/opt/spack/darwin-sierra-x86_64/clang-8.0.0-apple/pkg-config-0.29.2-n4c2a2ji37sc2c7jbywcj5hpld2yu
+      pkg-config@0.29.2%clang-7.3.0-apple: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/pkg-config-0.29.2-uukd54jkwj4adjctkinypp6bjm6vw5mh
+      pkg-config@0.29.2%clang-7.0.3-apple: /Users/Shared/spack/opt/spack/darwin-elcapitan-x86_64/clang-7.3.0-apple/pkg-config-0.29.2-yt35lin7sy45trmouypt6nd7b65oiyvq
+    buildable: False
