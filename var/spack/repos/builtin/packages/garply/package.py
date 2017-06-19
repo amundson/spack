@@ -8,7 +8,7 @@ class Garply(CMakePackage):
     homepage = "http://www.example.com"
     url      = "http://compacc.fnal.gov/~amundson/garply-1.0.tar.gz"
 
-    version('2.0.0', git='git@github.com:amundson/garply.git',
+    version('2.0.0', git='https://github.com/amundson/garply.git',
                         tag='v2.0.0')
     version('1.0', '13a24801512e5b577afde076d2e908d3')
 

@@ -5,11 +5,11 @@ class Quux(CMakePackage):
     homepage = "https://github.com/amundson/quux"
     url      = "http://compacc.fnal.gov/~amundson/quux-1.0.tar.gz"
 
-    version('2.0.0', git='git@github.com:amundson/quux.git',
+    version('2.0.0', git='https://github.com/amundson/quux.git',
             tag='v2.0.0')
-    version('1.0.3', git='git@github.com:amundson/quux.git',
+    version('1.0.3', git='https://github.com/amundson/quux.git',
             tag='v1.0.3')
-    version('1.0.2', git='git@github.com:amundson/quux.git',
+    version('1.0.2', git='https://github.com/amundson/quux.git',
             tag='v1.0.2')
     version('1.0', 'e64c0dfbfdf43c17cd6aeeef79058734')
 
