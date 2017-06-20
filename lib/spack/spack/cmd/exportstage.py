@@ -28,14 +28,16 @@ import llnl.util.tty as tty
 import spack
 import spack.cmd
 
-description = "Export stage information for package"
+description = "export stage information for package"
+section = "spackdev"
+level = "short"
 
 
 def setup_parser(subparser):
     subparser.add_argument(
         'spec', help="spec of package to stage")
 
-def export_stage(parser, args):
+def exportstage(parser, args):
     specs = spack.cmd.parse_specs([args.spec], concretize=True)
     spec = specs[0]
     package = spack.repo.get(spec)
