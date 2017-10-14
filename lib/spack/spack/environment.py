@@ -74,6 +74,13 @@ class AppendFlagsEnv(NameValueModifier):
         else:
             os.environ[self.name] = str(self.value)
 
+    def to_sh(self, out):
+        if self.name in os.environ and os.environ[self.name]:
+            out.write(self.name + "='" + os.environ[self.name] + \
+                    self.separator + str(self.value) + "'\n")
+        else:
+            out.write(self.name + "='" + str(self.value))
+
 
 class UnsetEnv(NameModifier):
 

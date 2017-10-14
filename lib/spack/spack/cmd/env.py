@@ -26,7 +26,7 @@ from __future__ import print_function
 
 import argparse
 import os
-
+import sys
 import llnl.util.tty as tty
 import spack.build_environment as build_env
 import spack.cmd
@@ -67,7 +67,6 @@ def env(parser, args):
     spec = specs[0]
 
     spack_env = build_env.setup_package(spec.package, args.dirty)
-    spack_env = build_env.setup_package(spec.package)
 
     if not cmd:
         # If no command act like the "env" command and print out env vars.
