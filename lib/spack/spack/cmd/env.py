@@ -42,6 +42,10 @@ def setup_parser(subparser):
     subparser.add_argument(
         'spec', nargs=argparse.REMAINDER,
         help="specs of package environment to emulate")
+    subparser.add_argument(
+        '--spackdev', action='store_true',
+        help="write environment modifications in shell format for spackdev")
+
 
 
 def env(parser, args):
@@ -69,13 +73,16 @@ def env(parser, args):
     spack_env = build_env.setup_package(spec.package, args.dirty)
 
     if not cmd:
-        # If no command act like the "env" command and print out env vars.
-        for key, val in os.environ.items():
-            print("%s=%s" % (key, val))
+        # If spackdev, print out shell modifications in shell format
+        if args.spackdev:
+            spack_env.write_sh_modifications(sys.stdout)
+        else:
+            # If no command act like the "env" command and print out env vars.
+            for key, val in os.environ.items():
+                print("%s=%s" % (key, val))
 
     else:
         # Otherwise execute the command with the new environment
         os.execvp(cmd[0], cmd)
 
-    spack_env.write_sh_modifications(sys.stdout)
 
