@@ -14,6 +14,7 @@ class Garply(CMakePackage):
 
     # FIXME: Add dependencies if required.
     # depends_on('foo')
+    depends_on('cmake@3.0:', type='build')
 
     def cmake_args(self):
         # FIXME: Add arguments other than

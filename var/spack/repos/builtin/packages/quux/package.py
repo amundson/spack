@@ -13,6 +13,6 @@ class Quux(CMakePackage):
             tag='v1.0.2')
     version('1.0', 'e64c0dfbfdf43c17cd6aeeef79058734')
 
-    depends_on("cmake@3.0:")
+    depends_on("cmake@3.0:", type='build')
     depends_on("garply")
 
