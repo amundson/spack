@@ -63,12 +63,20 @@ config = spack.config.get_config("config")
 #
 root = canonicalize_path(
     config.get('install_tree', os.path.join(spack.opt_path, 'spack')))
+base_root = config.get('base_install_tree', None)
+if base_root:
+    base_root = canonicalize_path(base_root)
+if base_root == root:
+    base_root = None
 
 #
 # Set up the installed packages database
 #
 db = Database(root)
-
+if base_root:
+    base_db = Database(base_root)
+else:
+    base_db = None
 #
 # This controls how spack lays out install prefixes and
 # stage directories.
@@ -76,5 +84,9 @@ db = Database(root)
 layout = YamlDirectoryLayout(root,
                              hash_len=config.get('install_hash_length'),
                              path_scheme=config.get('install_path_scheme'))
+if base_root:
+    base_layout = YamlDirectoryLayout(base_root,
+                                      hash_len=config.get('install_hash_length'),
+                                      path_scheme=config.get('install_path_scheme'))
 
 extensions = YamlExtensionsLayout(root, layout)
