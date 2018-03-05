@@ -116,9 +116,10 @@ def query_arguments(args):
     q_args = {'installed': installed, 'known': known, "explicit": explicit}
     return q_args
 
+def find_subset(label, args, q_args):
+    if label:
+        tty.msg(label + ':')
 
-def find(parser, args):
-    q_args = query_arguments(args)
     query_specs = args.specs(**q_args)
 
     # Exit early if no package matches the constraint
@@ -138,3 +139,15 @@ def find(parser, args):
         tty.msg("%d installed packages." % len(query_specs))
 
     display_specs(query_specs, args)
+
+def find(parser, args):
+    q_args = query_arguments(args)
+    if spack.store.base_db:
+        tmp = spack.store.db
+        spack.store.db = None
+        find_subset("base", args, q_args)
+        spack.store.db = tmp
+        spack.store.base_db = None
+        find_subset("local", args, q_args)
+    else:
+        find_subset(None, args, q_args)

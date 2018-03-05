@@ -72,13 +72,22 @@ class ConstraintAction(argparse.Action):
 
         # return everything for an empty query.
         if not qspecs:
-            return spack.store.db.query(**kwargs)
+            retval = []
+            if spack.store.base_db:
+                retval.extend(spack.store.base_db.query(**kwargs))
+            if spack.store.db:
+                retval.extend(spack.store.db.query(**kwargs))
+            return retval
 
         # Return only matching stuff otherwise.
         specs = set()
         for spec in qspecs:
-            for s in spack.store.db.query(spec, **kwargs):
-                specs.add(s)
+            if spack.store.base_db:
+                for s in spack.store.base_db.query(spec, **kwargs):
+                    specs.add(s)
+            if spack.store.db:
+                for s in spack.store.db.query(spec, **kwargs):
+                    specs.add(s)
         return sorted(specs)
 
 
