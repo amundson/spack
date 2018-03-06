@@ -88,5 +88,7 @@ if base_root:
     base_layout = YamlDirectoryLayout(base_root,
                                       hash_len=config.get('install_hash_length'),
                                       path_scheme=config.get('install_path_scheme'))
+else:
+    base_layout = None
 
 extensions = YamlExtensionsLayout(root, layout)

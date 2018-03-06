@@ -1376,7 +1376,16 @@ class Spec(object):
     def prefix(self):
         if hasattr(self, 'test_prefix'):
             return Prefix(self.test_prefix)
-        return Prefix(spack.store.layout.path_for_spec(self))
+        print 'jfa prefix for', self.name
+        spec_prefix = None
+        if spack.store.base_layout:
+            if spack.store.base_db.query(self):
+                spec_prefix = spack.store.base_layout.path_for_spec(self)
+        if not spec_prefix:
+            spec_prefix = spack.store.layout.path_for_spec(self)
+        print 'jfa: name, prefix, Prefix(prefix):', self.name, \
+        spec_prefix, Prefix(spec_prefix)
+        return Prefix(spec_prefix)
 
     def _set_test_prefix(self, val):
         self.test_prefix = val
@@ -3099,6 +3108,12 @@ class Spec(object):
         if not self.concrete:
             return None
         try:
+            if spack.store.base_db:
+                try:
+                    record = spack.store.base_db.get_record(self)
+                    return record.explicit
+                except KeyError:
+                    pass
             record = spack.store.db.get_record(self)
             return record.explicit
         except KeyError:

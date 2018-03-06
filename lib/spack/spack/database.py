@@ -61,6 +61,7 @@ from spack.util.crypto import bit_length
 from spack.directory_layout import DirectoryLayoutError
 from spack.error import SpackError
 from spack.version import Version
+import traceback
 
 
 # DB goes in this directory underneath the root
@@ -652,6 +653,7 @@ class Database(object):
             match = self.query_one(spec, **kwargs)
             if match:
                 return match.dag_hash()
+            traceback.print_stack() # jfa
             raise KeyError("No such spec in database! %s" % spec)
         return key
 

@@ -1261,10 +1261,11 @@ class PackageBase(with_metaclass(PackageMeta, object)):
             tty.msg(message.format(s=self))
             spack.store.db.add(self.spec, None, explicit=explicit)
 
-    def _update_explicit_entry_in_db(self, rec, explicit):
+    def _update_explicit_entry_in_db(self, rec, explicit,
+                                     db=spack.store.db):
         if explicit and not rec.explicit:
-            with spack.store.db.write_transaction():
-                rec = spack.store.db.get_record(self.spec)
+            with db.write_transaction():
+                rec = db.get_record(self.spec)
                 rec.explicit = True
                 message = '{s.name}@{s.version} : marking the package explicit'
                 tty.msg(message.format(s=self))
@@ -1335,10 +1336,18 @@ class PackageBase(with_metaclass(PackageMeta, object)):
 
         # Ensure package is not already installed
         layout = spack.store.layout
+        base_layout = spack.store.base_layout
         with spack.store.db.prefix_read_lock(self.spec):
             if partial:
                 tty.msg(
                     "Continuing from partial install of %s" % self.name)
+            elif base_layout:
+                if base_layout.check_installed(self.spec):
+                    msg = '{0.name} is already installed in {0.prefix}'
+                    tty.msg(msg.format(self))
+                    rec = spack.store.base_db.get_record(self.spec)
+                    return self._update_explicit_entry_in_db(rec, explicit,
+                                                             spack.store.base_db)
             elif layout.check_installed(self.spec):
                 msg = '{0.name} is already installed in {0.prefix}'
                 tty.msg(msg.format(self))
