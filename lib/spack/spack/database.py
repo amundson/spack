@@ -133,7 +133,7 @@ class Database(object):
     """Per-process lock objects for each install prefix."""
     _prefix_locks = {}
 
-    def __init__(self, root, db_dir=None):
+    def __init__(self, root, db_dir=None, parent_db=None):
         """Create a Database for Spack installations under ``root``.
 
         A Database is a cache of Specs data from ``$prefix/spec.yaml``
@@ -156,6 +156,7 @@ class Database(object):
 
         """
         self.root = root
+        self.parent_db = parent_db
 
         if db_dir is None:
             # If the db_dir is not provided, default to within the db root.
@@ -810,11 +811,19 @@ class Database(object):
                 if hash_key in self._data:
                     return [self._data[hash_key].spec]
                 else:
-                    return []
+                    if self.parent_db:
+                        return self.parent_db.query(query_spec, known, installed,
+                                                    explicit)
+                    else:
+                        return []
 
             # Abstract specs require more work -- currently we test
             # against everything.
-            results = []
+            if self.parent_db:
+                results = self.parent_db.query(query_spec, known, installed,
+                                               explicit)
+            else:
+                results = []
             for key, rec in self._data.items():
                 if installed is not any and rec.installed != installed:
                     continue
@@ -824,7 +833,8 @@ class Database(object):
                         rec.spec.name) != known:
                     continue
                 if query_spec is any or rec.spec.satisfies(query_spec):
-                    results.append(rec.spec)
+                    if results.count(rec.spec) == 0:
+                        results.append(rec.spec)
 
             return sorted(results)
 
