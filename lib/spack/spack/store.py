@@ -63,36 +63,33 @@ config = spack.config.get_config("config")
 #
 root = canonicalize_path(
     config.get('install_tree', os.path.join(spack.opt_path, 'spack')))
-parent_root = config.get('parent_install_tree', None)
-if parent_root:
-    parent_root = canonicalize_path(parent_root)
-if parent_root == root:
-    parent_root = None
 
-#
-# Set up the installed packages dataparent
-#
-if parent_root:
-    parent_db = Database(parent_root, parent_db=None)
-else:
-    parent_db = None
-db = Database(root, parent_db=parent_db)
+parent_install_trees = config.get('parent_install_trees', [])
+if not isinstance(parent_install_trees, (list, tuple)):
+    parent_install_trees = [parent_install_trees]
+if parent_install_trees == [None]:
+    parent_install_trees = []
+parent_dbs = [None]
+parent_layouts = [None]
+for parent_install_tree in parent_install_trees:
+    parent_root = canonicalize_path(parent_install_tree)
+    parent_dbs.append(Database(parent_root, parent_dbs[-1]))
+    parent_layouts.append(
+        YamlDirectoryLayout(parent_root,
+                            hash_len=config.get('install_hash_length'),
+                            path_scheme=config.get('install_path_scheme'),
+                            parent_layout=parent_layouts[-1]))
+print('jfa: parent_dbs =', parent_dbs)
+print('jfa: parent_layouts =', parent_layouts)
+db = Database(root, parent_db=parent_dbs[-1])
 
 #
 # This controls how spack lays out install prefixes and
 # stage directories.
 #
-if parent_root:
-    parent_layout = YamlDirectoryLayout(parent_root,
-                                      hash_len=config.get('install_hash_length'),
-                                      path_scheme=config.get('install_path_scheme'),
-                                      parent_layout=None)
-else:
-    parent_layout = None
-
 layout = YamlDirectoryLayout(root,
                              hash_len=config.get('install_hash_length'),
                              path_scheme=config.get('install_path_scheme'),
-                             parent_layout=parent_layout)
+                             parent_layout=parent_layouts[-1])
 
 extensions = YamlExtensionsLayout(root, layout)
