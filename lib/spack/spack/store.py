@@ -82,14 +82,17 @@ db = Database(root, parent_db=base_db)
 # This controls how spack lays out install prefixes and
 # stage directories.
 #
-layout = YamlDirectoryLayout(root,
-                             hash_len=config.get('install_hash_length'),
-                             path_scheme=config.get('install_path_scheme'))
 if base_root:
     base_layout = YamlDirectoryLayout(base_root,
                                       hash_len=config.get('install_hash_length'),
-                                      path_scheme=config.get('install_path_scheme'))
+                                      path_scheme=config.get('install_path_scheme'),
+                                      base_layout=None)
 else:
     base_layout = None
+
+layout = YamlDirectoryLayout(root,
+                             hash_len=config.get('install_hash_length'),
+                             path_scheme=config.get('install_path_scheme'),
+                             base_layout=base_layout)
 
 extensions = YamlExtensionsLayout(root, layout)
