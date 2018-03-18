@@ -767,7 +767,8 @@ class Database(object):
                 continue
             # TODO: conditional way to do this instead of catching exceptions
 
-    def query(self, query_spec=any, known=any, installed=True, explicit=any):
+    def query(self, query_spec=any, known=any, installed=True, explicit=any,
+              include_parents=True):
         """Run a query on the database.
 
         ``query_spec``
@@ -811,7 +812,7 @@ class Database(object):
                 if hash_key in self._data:
                     return [self._data[hash_key].spec]
                 else:
-                    if self.parent_db:
+                    if self.parent_db and include_parents:
                         return self.parent_db.query(query_spec, known, installed,
                                                     explicit)
                     else:
@@ -819,7 +820,7 @@ class Database(object):
 
             # Abstract specs require more work -- currently we test
             # against everything.
-            if self.parent_db:
+            if self.parent_db and include_parents:
                 results = self.parent_db.query(query_spec, known, installed,
                                                explicit)
             else:
