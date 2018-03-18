@@ -124,7 +124,8 @@ def find(parser, args):
     for db in dbs[1:]:
         q_args['db'] = db
         q_args['include_parents'] = False
-        tty.msg("In {0}:".format(db.root))
+        if len(dbs) > 1:
+            tty.msg("In {0}:".format(db.root))
         query_specs = args.specs(**q_args)
 
         # Exit early if no package matches the constraint
