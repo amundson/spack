@@ -81,8 +81,6 @@ for parent_install_tree in parent_install_trees:
                             hash_len=config.get('install_hash_length'),
                             path_scheme=config.get('install_path_scheme'),
                             parent_layout=parent_layouts[-1]))
-print('jfa: parent_dbs =', parent_dbs)
-print('jfa: parent_layouts =', parent_layouts)
 db = Database(root, parent_db=parent_dbs[-1])
 
 #
