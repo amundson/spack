@@ -73,6 +73,8 @@ parent_dbs = [None]
 parent_layouts = [None]
 for parent_install_tree in parent_install_trees:
     parent_root = canonicalize_path(parent_install_tree)
+    if parent_root == root:
+        break
     parent_dbs.append(Database(parent_root, parent_dbs[-1]))
     parent_layouts.append(
         YamlDirectoryLayout(parent_root,
