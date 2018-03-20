@@ -580,6 +580,9 @@ class Database(object):
                 self._write(None, None, None)
             self.reindex(spack.store.layout)
 
+    def query_hash(self, hash):
+        return hash in self._data
+
     def _add(self, spec, directory_layout=None, explicit=False):
         """Add an install record for this spec to the database.
 
