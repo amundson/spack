@@ -659,6 +659,8 @@ class Database(object):
     @_autospec
     def get_record(self, spec, **kwargs):
         key = self._get_matching_spec_key(spec, **kwargs)
+        if key not in self._data and self.parent_db:
+            return self.parent_db.get_record(spec, **kwargs)
         return self._data[key]
 
     def _decrement_ref_count(self, spec):
