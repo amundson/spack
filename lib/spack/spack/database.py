@@ -598,8 +598,14 @@ class Database(object):
 
         for dep in spec.dependencies(_tracked_deps):
             dkey = dep.dag_hash()
-            if dkey not in self._data:
-                self._add(dep, directory_layout, explicit=False)
+
+            if not self.query_hash(dkey):
+                in_parent_db = False
+                if self.parent_db:
+                    if self.parent_db.query_hash(dkey):
+                        in_parent_db = True
+                if not in_parent_db:
+                    self._add(dep, directory_layout, explicit=False)
 
         key = spec.dag_hash()
         if key not in self._data:
@@ -623,8 +629,9 @@ class Database(object):
             # Connect dependencies from the DB to the new copy.
             for name, dep in iteritems(spec.dependencies_dict(_tracked_deps)):
                 dkey = dep.spec.dag_hash()
-                new_spec._add_dependency(self._data[dkey].spec, dep.deptypes)
-                self._data[dkey].ref_count += 1
+                if self.query_hash(dkey):
+                    new_spec._add_dependency(self._data[dkey].spec, dep.deptypes)
+                    self._data[dkey].ref_count += 1
 
             # Mark concrete once everything is built, and preserve
             # the original hash of concrete specs.
