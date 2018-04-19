@@ -291,8 +291,10 @@ class Database(object):
                              "%s needs %s-%s" % (
                                  spec.cformat('$_$/'), dname, dhash[:7]))
                     continue
-
-                child = data[dhash].spec
+                if dhash in data:
+                    child = data[dhash].spec
+                else:
+                    child = self._get_matching_key_spec(dhash)
                 spec._add_dependency(child, dtypes)
 
     def _read_from_file(self, stream, format='json'):
@@ -630,8 +632,12 @@ class Database(object):
             for name, dep in iteritems(spec.dependencies_dict(_tracked_deps)):
                 dkey = dep.spec.dag_hash()
                 if self.query_hash(dkey):
-                    new_spec._add_dependency(self._data[dkey].spec, dep.deptypes)
+                    new_spec._add_dependency(self._data[dkey].spec,
+                                             dep.deptypes)
                     self._data[dkey].ref_count += 1
+                else:
+                    new_spec._add_dependency(self._get_matching_key_spec(dkey),
+                                             dep.deptypes)
 
             # Mark concrete once everything is built, and preserve
             # the original hash of concrete specs.
@@ -665,6 +671,14 @@ class Database(object):
                 return match.dag_hash()
             raise KeyError("No such spec in database! %s" % spec)
         return key
+
+    def _get_matching_key_spec(self, key):
+        if self.query_hash(key):
+            return self._data[key].spec
+        elif self.parent_db:
+            return self.parent_db._get_matching_key_spec(key)
+        else:
+            raise KeyError("No such key in database! %s" % key)
 
     @_autospec
     def get_record(self, spec, **kwargs):
