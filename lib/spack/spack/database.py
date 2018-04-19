@@ -829,6 +829,8 @@ class Database(object):
               these really special cases that only belong here?
 
         """
+        if self.parent_db:
+            self.parent_db._read()
         with self.read_transaction():
             # Just look up concrete specs with hashes; no fancy search.
             if (isinstance(query_spec, spack.spec.Spec) and
