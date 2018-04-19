@@ -207,7 +207,6 @@ def find(module_types, specs, args):
 
     # Check if the module file is present
     writer = spack.modules.module_types[module_type](spec)
-    print ('jfa wtf:', writer.layout.existing_filename)
     if not os.path.isfile(writer.layout.existing_filename):
         msg = 'Even though {1} is installed, '
         msg += 'no {0} module has been generated for it.'

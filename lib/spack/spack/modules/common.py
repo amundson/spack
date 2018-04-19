@@ -252,7 +252,6 @@ def parent_root_paths(name):
         parent_module_roots = []
     this_root_path = root_path(name)
     retval = []
-    print('jfa: parent_module_roots =', parent_module_roots)
     for root in parent_module_roots:
         canonicalized_root = spack.util.path.canonicalize_path(root)
         if canonicalized_root == this_root_path:
@@ -474,20 +473,17 @@ class BaseFileLayout(object):
         # Architecture sub-folder
         arch_folder = str(self.spec.architecture)
         # Return the absolute path
-        print ('jfa: filename =',os.path.join(self.dirname(), arch_folder, filename))
         return os.path.join(self.dirname(), arch_folder, filename)
 
     @property
     def existing_filename(self):
         """Name of an existing module file for the current spec.
         Returns default filename if no existing file is found.  """
-        print("jfa: getting existing filename for", self.conf.spec)
         # Just the name of the file
         filename = self.use_name
         if self.extension:
             filename = '{0}.{1}'.format(self.use_name, self.extension)
         default_pathname = self.filename
-        print('jfa existing pathname default', default_pathname)
         if os.path.exists(default_pathname):
             return default_pathname
         else:
@@ -496,10 +492,8 @@ class BaseFileLayout(object):
             parent_root_paths.reverse()
             for path in parent_root_paths:
                 pathname = os.path.join(path, arch_folder, filename)
-                print ('jfa: existing pathname trying', pathname)
                 if os.path.exists(pathname):
                     return pathname
-                print ('jfa: existing pathname nope')
             return default_pathname
 
 

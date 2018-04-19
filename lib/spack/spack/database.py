@@ -295,7 +295,6 @@ class Database(object):
                              "%s needs %s-%s" % (
                                  spec.cformat('$_$/'), dname, dhash[:7]))
                     continue
-                print('jfa: addding dependency', child)
                 spec._add_dependency(child, dtypes)
 
     def _read_from_file(self, stream, format='json'):
