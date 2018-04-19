@@ -286,15 +286,16 @@ class Database(object):
             yaml_deps = spec_dict[spec.name]['dependencies']
             for dname, dhash, dtypes in spack.spec.Spec.read_yaml_dep_specs(
                     yaml_deps):
-                if dhash not in data:
-                    tty.warn("Missing dependency not in database: ",
-                             "%s needs %s-%s" % (
-                                 spec.cformat('$_$/'), dname, dhash[:7]))
-                    continue
                 if dhash in data:
                     child = data[dhash].spec
                 else:
                     child = self._get_matching_key_spec(dhash)
+                if not child:
+                    tty.warn("Missing dependency not in database: ",
+                             "%s needs %s-%s" % (
+                                 spec.cformat('$_$/'), dname, dhash[:7]))
+                    continue
+                print('jfa: addding dependency', child)
                 spec._add_dependency(child, dtypes)
 
     def _read_from_file(self, stream, format='json'):
@@ -678,7 +679,7 @@ class Database(object):
         elif self.parent_db:
             return self.parent_db._get_matching_key_spec(key)
         else:
-            raise KeyError("No such key in database! %s" % key)
+            return None
 
     @_autospec
     def get_record(self, spec, **kwargs):
