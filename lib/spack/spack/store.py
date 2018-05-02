@@ -64,7 +64,15 @@ config = spack.config.get_config("config")
 root = canonicalize_path(
     config.get('install_tree', os.path.join(spack.opt_path, 'spack')))
 
-parent_install_trees = config.get('parent_install_trees', [])
+chain_prefixes = config.get('chain_prefixes', [])
+parent_prefixes = []
+for prefix in chain_prefixes:
+    if prefix == spack.prefix:
+        break
+    parent_prefixes.append(prefix)
+parent_install_trees = config.get('parent_install_trees',
+                                  [os.path.join(prefix, 'opt', 'spack')
+                                   for prefix in parent_prefixes])
 if not isinstance(parent_install_trees, (list, tuple)):
     parent_install_trees = [parent_install_trees]
 if parent_install_trees == [None]:
