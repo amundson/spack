@@ -260,16 +260,6 @@ def parent_root_paths(name):
     else:
         chain_module_paths = [os.path.join(prefix, "share", "spack", "modules")
                               for prefix in parent_prefixes]
-    # path = roots.get(name, os.path.join(spack.share_path, name))
-    # default_paths = [os.path.join(prefix, "share", "spack", name)
-    #                  for prefix in parent_prefixes]
-    # config = spack.config.get_config("config")
-    # parent_prefixes = config.get('parent_prefixes', [])
-    # parent_module_roots = config.get('parent_module_roots', {name:[]}).get(name)
-    # if not isinstance(parent_module_roots, (list, tuple)):
-    #     parent_module_roots = [parent_module_roots]
-    # if parent_module_roots == [None]:
-    #     parent_module_roots = []
     this_root_path = root_path(name)
     retval = []
     for path in chain_module_paths:
@@ -277,10 +267,6 @@ def parent_root_paths(name):
         if canonicalized_path == this_root_path:
             break
         retval.append(canonicalized_path)
-    # print 'jfa: chain_module_paths =', chain_module_paths
-    # print 'jfa: retval =', retval
-    # import sys
-    # sys.exit(99)
     return retval
 
 
