@@ -65,7 +65,15 @@ import spack.util.environment
 import spack.error
 
 #: Root folders where the various module files should be written
-roots = spack.config.get_config('config').get('module_roots', {})
+config = spack.config.get_config("config")
+roots = config.get('module_roots', {})
+chain_prefixes = config.get('chain_prefixes', [])
+parent_prefixes = []
+for prefix in chain_prefixes:
+    if prefix == spack.prefix:
+        break
+    parent_prefixes.append(prefix)
+
 
 #: Merged modules.yaml as a dictionary
 configuration = spack.config.get_config('modules')
@@ -243,20 +251,36 @@ def parent_root_paths(name):
     Returns:
         list of root folders for parent module file installations
     """
-    path = roots.get(name, os.path.join(spack.share_path, name))
     config = spack.config.get_config("config")
-    parent_module_roots = config.get('parent_module_roots', {name:[]}).get(name)
-    if not isinstance(parent_module_roots, (list, tuple)):
-        parent_module_roots = [parent_module_roots]
-    if parent_module_roots == [None]:
-        parent_module_roots = []
+    chain_module_roots = config.get("chain_module_roots", None)
+    if chain_module_roots:
+        chain_module_paths = chain_module_roots.get(name)
+        if not isinstance(chain_module_paths, (list, tuple)):
+            chain_module_paths = [chain_module_paths]
+    else:
+        chain_module_paths = [os.path.join(prefix, "share", "spack", "modules")
+                              for prefix in parent_prefixes]
+    # path = roots.get(name, os.path.join(spack.share_path, name))
+    # default_paths = [os.path.join(prefix, "share", "spack", name)
+    #                  for prefix in parent_prefixes]
+    # config = spack.config.get_config("config")
+    # parent_prefixes = config.get('parent_prefixes', [])
+    # parent_module_roots = config.get('parent_module_roots', {name:[]}).get(name)
+    # if not isinstance(parent_module_roots, (list, tuple)):
+    #     parent_module_roots = [parent_module_roots]
+    # if parent_module_roots == [None]:
+    #     parent_module_roots = []
     this_root_path = root_path(name)
     retval = []
-    for root in parent_module_roots:
-        canonicalized_root = spack.util.path.canonicalize_path(root)
-        if canonicalized_root == this_root_path:
+    for path in chain_module_paths:
+        canonicalized_path = spack.util.path.canonicalize_path(path)
+        if canonicalized_path == this_root_path:
             break
-        retval.append(canonicalized_root)
+        retval.append(canonicalized_path)
+    # print 'jfa: chain_module_paths =', chain_module_paths
+    # print 'jfa: retval =', retval
+    # import sys
+    # sys.exit(99)
     return retval
 
 
